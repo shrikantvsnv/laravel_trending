@@ -50,7 +50,7 @@ class CurlHttpClient implements HttpClientInterface {
 }
 
 class GuzzleHttpClient implements HttpClientInterface {
-    use HttpRequestTrait, ResponseHandlerTrait;
+    use HttpRequestTrait;
 
     public function get(string $url): string {
         $response = $this->sendRequest('GET', $url);
