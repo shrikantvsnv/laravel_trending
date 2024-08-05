@@ -10,18 +10,18 @@ interface HttpClientInterface {
 #Create Traits for Reusable Methods
 
 trait HttpRequestTrait {
+
     protected function sendRequest(string $method, string $url, array $data = []): string {
         // Here you would use cURL or any other method to send the HTTP request
         // This is a simplified example.
         return "Sending $method request to $url with data: " . json_encode($data);
     }
-}
 
-trait ResponseHandlerTrait {
-    protected function handleResponse(string $response): array {
-        // Here you would handle the response, for instance, decode JSON, handle errors, etc.
-        return json_decode($response, true);
-    }
+     protected function handleResponse(string $response): array {
+            // Here you would handle the response, for instance, decode JSON, handle errors, etc.
+            return json_decode($response, true);
+     }
+
 }
 
 #Implement the Interface in Concrete Classes
