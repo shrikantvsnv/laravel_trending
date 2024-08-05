@@ -26,7 +26,7 @@ trait HttpRequestTrait {
 
 #Implement the Interface in Concrete Classes
 class CurlHttpClient implements HttpClientInterface {
-    use HttpRequestTrait, ResponseHandlerTrait;
+    use HttpRequestTrait;
 
     public function get(string $url): string {
         $response = $this->sendRequest('GET', $url);
