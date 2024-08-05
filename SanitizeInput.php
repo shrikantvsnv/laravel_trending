@@ -7,16 +7,6 @@ use Illuminate\Http\Request;
 
 class SanitizeInput
 {
-    /**
-     * Array mapping input keys to sanitization functions.
-     *
-     * @var array
-     */
-    protected $sanitizers = [
-        'username' => 'trim|strip_tags',
-        'email' => 'trim|strtolower',
-        // Add more mappings as needed
-    ];
 
     /**
      * Handle an incoming request.
@@ -27,37 +17,35 @@ class SanitizeInput
      */
     public function handle(Request $request, Closure $next)
     {
-        $input = $request->all();
+        /*
+           $sanitizers =  [
+                   'username' => 'trim|strip_tags',
+                   'email' => 'trim|strtolower',
+                   'password' => 'trim|strtolower',
+                 ];
+         */
+        $sanitizers = $this->getSanitizeFields($request->all());
 
-        foreach ($this->sanitizers as $key => $sanitizer) {
-            if ($request->has($key)) {
+        foreach ($sanitizers as $key => $sanitizer) {
+
                 $functions = explode('|', $sanitizer);
-                $value = $request->input($key);
+                $value = $request->$key;
                 foreach ($functions as $function) {
                     if (function_exists($function)) {
                         $value = $function($value);
                     }
                 }
                 $request->merge([$key => $value]);
-            }
+           }
         }
 
         return $next($request);
     }
 
-    function getenv(){
+    function getSanitizeFields($request){
 
-        // Original associative array
-        $first_array = array('c1' => 'Red', 'c2' => 'Green', 'c3' => 'White', 'c4' => 'Black');
-
-        // Array containing keys to check for intersection
-        $second_array = array('c2', 'c4');
-
-        // Use array_flip to swap keys and values, then apply array_intersect_key to find common keys
-        $result = array_intersect_key($first_array, array_flip($second_array));
-
-        // Display the result
-        print_r($result);
+        $sanitizers = config('sanitize.input_field')
+        return  array_intersect_key($sanitizers,$request);
 
     }
 
